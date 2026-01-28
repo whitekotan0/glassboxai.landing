@@ -28,6 +28,10 @@ const App: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleViewResult = (filename: string) => {
+    window.open(`/${filename}`, '_blank');
+  };
+
   // Live Console Simulation - REAL Logit Lens Workflow
   useEffect(() => {
     const sequence = [
@@ -128,7 +132,10 @@ const App: React.FC = () => {
             </p>
             
             <div className="mt-8 flex flex-wrap gap-4">
-                 <button className="flex items-center gap-2 rounded bg-white px-6 py-3 text-sm font-bold text-black hover:bg-neutral-200 transition-colors">
+                 <button 
+                    onClick={() => handleViewResult('2+2=.html')}
+                    className="flex items-center gap-2 rounded bg-white px-6 py-3 text-sm font-bold text-black hover:bg-neutral-200 transition-colors"
+                 >
                     <FileText size={16} />
                     View Result: "2+2=5"
                  </button>
