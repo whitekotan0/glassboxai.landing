@@ -29,11 +29,26 @@ const App: React.FC = () => {
   };
 
   const handleViewResult = (filename: string) => {
-    // Use base path for GitHub Pages
-    const basePath = '/glassboxai.landing';
-    // Encode filename to handle special characters like + and =
-    const encodedFilename = encodeURIComponent(filename);
-    window.open(`${basePath}/${encodedFilename}`, '_blank');
+    try {
+      // Get base path from vite config or current location
+      const pathname = window.location.pathname;
+      const isGitHubPages = pathname.includes('/glassboxai.landing');
+      const basePath = isGitHubPages ? '/glassboxai.landing' : '';
+      
+      // Build URL - files from public folder are at root
+      const url = `${basePath}/${filename}`;
+      console.log('Opening URL:', url, 'Full path:', window.location.origin + url);
+      
+      // Try to open in new tab
+      const newWindow = window.open(url, '_blank');
+      if (!newWindow) {
+        // If popup blocked, try same window
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Error opening file:', error);
+      alert(`Помилка: ${error}. Перевірте консоль.`);
+    }
   };
 
   // Live Console Simulation - REAL Logit Lens Workflow
@@ -137,8 +152,12 @@ const App: React.FC = () => {
             
             <div className="mt-8 flex flex-wrap gap-4">
                  <button 
-                    onClick={() => handleViewResult('2+2=.html')}
-                    className="flex items-center gap-2 rounded bg-white px-6 py-3 text-sm font-bold text-black hover:bg-neutral-200 transition-colors"
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleViewResult('2+2=.html');
+                    }}
+                    className="flex items-center gap-2 rounded bg-white px-6 py-3 text-sm font-bold text-black hover:bg-neutral-200 transition-colors cursor-pointer"
                  >
                     <FileText size={16} />
                     View Result: "2+2=5"
