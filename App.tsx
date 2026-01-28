@@ -29,7 +29,11 @@ const App: React.FC = () => {
   };
 
   const handleViewResult = (filename: string) => {
-    window.open(`/${filename}`, '_blank');
+    // Use base path for GitHub Pages
+    const basePath = '/glassboxai.landing';
+    // Encode filename to handle special characters like + and =
+    const encodedFilename = encodeURIComponent(filename);
+    window.open(`${basePath}/${encodedFilename}`, '_blank');
   };
 
   // Live Console Simulation - REAL Logit Lens Workflow
